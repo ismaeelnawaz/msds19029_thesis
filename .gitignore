@@ -131,3 +131,7 @@ dmypy.json
 .pyre/
 dataset/*
 home_credit/catboost_info/*
+wandb/*
+saved_models/*
+.tmp
+
