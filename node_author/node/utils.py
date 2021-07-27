@@ -1,14 +1,15 @@
-import os
-import glob
-import hashlib
-import gc
-import time
-import numpy as np
-import requests
-import contextlib
-from tqdm import tqdm
-import torch
+# -*- coding: utf-8 -*-
 
+from tqdm import tqdm
+import numpy as np
+import contextlib
+import requests
+import hashlib
+import torch
+import glob
+import time
+import gc
+import os
 
 def download(url, filename, delete_if_interrupted=True, chunk_size=4096):
     """ saves file from url to filename with a fancy progressbar """
@@ -34,7 +35,6 @@ def download(url, filename, delete_if_interrupted=True, chunk_size=4096):
         raise e
     return filename
 
-
 def iterate_minibatches(*tensors, batch_size, shuffle=True, epochs=1,
                         allow_incomplete=True, callback=lambda x:x):
     indices = np.arange(len(tensors[0]))
@@ -50,7 +50,6 @@ def iterate_minibatches(*tensors, batch_size, shuffle=True, epochs=1,
         epoch += 1
         if epoch >= epochs:
             break
-
 
 def process_in_chunks(function, *args, batch_size, out=None, **kwargs):
     """
@@ -74,7 +73,6 @@ def process_in_chunks(function, *args, batch_size, out=None, **kwargs):
         out[batch_ix] = function(*[x[batch_ix] for x in args])
     return out
 
-
 def check_numpy(x):
     """ Makes sure x is a numpy array """
     if isinstance(x, torch.Tensor):
@@ -83,17 +81,14 @@ def check_numpy(x):
     assert isinstance(x, np.ndarray)
     return x
 
-
 @contextlib.contextmanager
 def nop_ctx():
     yield None
-
 
 def get_latest_file(pattern):
     list_of_files = glob.glob(pattern) # * means all if need specific format then *.csv
     assert len(list_of_files) > 0, "No files found: " + pattern
     return max(list_of_files, key=os.path.getctime)
-
 
 def md5sum(fname):
     """ Computes mdp checksum of a file """
@@ -102,7 +97,6 @@ def md5sum(fname):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
-
 
 def free_memory(sleep_time=0.1):
     """ Black magic function to free torch memory and some jupyter whims """

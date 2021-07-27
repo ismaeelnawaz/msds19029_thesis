@@ -1,20 +1,19 @@
-import os
-import bz2
-import numpy as np
+# -*- coding: utf-8 -*-
+
+from sklearn.preprocessing import QuantileTransformer
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_svmlight_file
+from category_encoders import LeaveOneOutEncoder
+from .utils import download
 import pandas as pd
-import gzip
+import numpy as np
+import warnings
+import random
 import shutil
 import torch
-import random
-import warnings
-
-from sklearn.model_selection import train_test_split
-
-from .utils import download
-from sklearn.datasets import load_svmlight_file
-from sklearn.preprocessing import QuantileTransformer
-from category_encoders import LeaveOneOutEncoder
-
+import gzip
+import bz2
+import os
 
 class Dataset:
 
@@ -93,7 +92,6 @@ class Dataset:
         np.savetxt(os.path.join(path, 'y_valid.csv'), self.y_valid, delimiter=',')
         np.savetxt(os.path.join(path, 'y_test.csv'), self.y_test, delimiter=',')
 
-
 def fetch_A9A(path, train_size=None, valid_size=None, test_size=None):
     train_path = os.path.join(path, 'a9a')
     test_path = os.path.join(path, 'a9a.t')
@@ -137,7 +135,6 @@ def fetch_A9A(path, train_size=None, valid_size=None, test_size=None):
         X_valid=X_train[valid_idx], y_valid=y_train[valid_idx],
         X_test=X_test, y_test=y_test
     )
-
 
 def fetch_EPSILON(path, train_size=None, valid_size=None, test_size=None):
     train_path = os.path.join(path, 'epsilon_normalized')
@@ -192,7 +189,6 @@ def fetch_EPSILON(path, train_size=None, valid_size=None, test_size=None):
         X_test=X_test, y_test=y_test
     )
 
-
 def fetch_PROTEIN(path, train_size=None, valid_size=None, test_size=None):
     """
     https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/multiclass.html#protein
@@ -242,7 +238,6 @@ def fetch_PROTEIN(path, train_size=None, valid_size=None, test_size=None):
         X_test=X_test, y_test=y_test
     )
 
-
 def fetch_YEAR(path, train_size=None, valid_size=None, test_size=51630):
     data_path = os.path.join(path, 'data.csv')
     if not os.path.exists(data_path):
@@ -282,7 +277,6 @@ def fetch_YEAR(path, train_size=None, valid_size=None, test_size=51630):
         X_valid=X_train[valid_idx], y_valid=y_train[valid_idx],
         X_test=X_test, y_test=y_test,
     )
-
 
 def fetch_HIGGS(path, train_size=None, valid_size=None, test_size=5 * 10 ** 5):
     data_path = os.path.join(path, 'higgs.csv')
@@ -328,7 +322,6 @@ def fetch_HIGGS(path, train_size=None, valid_size=None, test_size=5 * 10 ** 5):
         X_test=X_test, y_test=y_test,
     )
 
-
 def fetch_MICROSOFT(path):
     train_path = os.path.join(path, 'msrank_train.tsv')
     test_path = os.path.join(path, 'msrank_test.tsv')
@@ -362,7 +355,6 @@ def fetch_MICROSOFT(path):
         X_valid=X_valid.astype(np.float32), y_valid=y_valid.astype(np.int64), query_valid=query_valid,
         X_test=X_test.astype(np.float32), y_test=y_test.astype(np.int64), query_test=query_test,
     )
-
 
 def fetch_YAHOO(path):
     train_path = os.path.join(path, 'yahoo_train.tsv')
@@ -401,7 +393,6 @@ def fetch_YAHOO(path):
         X_valid=X_valid.astype(np.float32), y_valid=y_valid, query_valid=query_valid,
         X_test=X_test.astype(np.float32), y_test=y_test, query_test=query_test,
     )
-
 
 def fetch_CLICK(path, valid_size=100_000, validation_seed=None):
     # based on: https://www.kaggle.com/slamnz/primer-airlines-delay

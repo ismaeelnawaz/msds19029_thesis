@@ -1,12 +1,12 @@
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import numpy as np
+# -*- coding: utf-8 -*-
 
 from .nn_utils import sparsemax, sparsemoid, ModuleWithInit
+import torch.nn.functional as F
 from .utils import check_numpy
 from warnings import warn
-
+import torch.nn as nn
+import numpy as np
+import torch
 
 class ODST(ModuleWithInit):
     def __init__(self, in_features, num_trees, depth=6, tree_dim=1, flatten_output=True,
@@ -141,4 +141,3 @@ class ODST(ModuleWithInit):
             self.__class__.__name__, self.feature_selection_logits.shape[0],
             self.num_trees, self.depth, self.tree_dim, self.flatten_output
         )
-

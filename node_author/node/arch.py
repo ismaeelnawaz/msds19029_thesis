@@ -1,8 +1,9 @@
-import torch
-import torch.nn as nn
+# -*- coding: utf-8 -*-
+
 import torch.nn.functional as F
 from .odst import ODST
-
+import torch.nn as nn
+import torch
 
 class DenseBlock(nn.Sequential):
     def __init__(self, input_dim, layer_dim, num_layers, tree_dim=1, max_features=None,

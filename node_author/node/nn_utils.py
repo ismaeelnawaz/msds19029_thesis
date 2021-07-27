@@ -1,14 +1,13 @@
-import contextlib
+# -*- coding: utf-8 -*-
 
-import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 from torch.autograd import Function
 from collections import OrderedDict
-
+import torch.nn.functional as F
 from torch.jit import script
-
+import torch.nn as nn
+import numpy as np
+import contextlib
+import torch
 
 def to_one_hot(y, depth=None):
     r"""
@@ -24,14 +23,12 @@ def to_one_hot(y, depth=None):
     y_one_hot = y_one_hot.view(*(tuple(y.shape) + (-1,)))
     return y_one_hot
 
-
 def _make_ix_like(input, dim=0):
     d = input.size(dim)
     rho = torch.arange(1, d + 1, device=input.device, dtype=input.dtype)
     view = [1] * input.dim()
     view[0] = -1
     return rho.view(view).transpose(0, dim)
-
 
 class SparsemaxFunction(Function):
     """
@@ -72,7 +69,6 @@ class SparsemaxFunction(Function):
         grad_input = torch.where(output != 0, grad_input - v_hat, grad_input)
         return grad_input, None
 
-
     @staticmethod
     def _threshold_and_support(input, dim=-1):
         """Sparsemax building block: compute the threshold
@@ -95,10 +91,8 @@ class SparsemaxFunction(Function):
         tau /= support_size.to(input.dtype)
         return tau, support_size
 
-
 sparsemax = lambda input, dim=-1: SparsemaxFunction.apply(input, dim)
 sparsemoid = lambda input: (0.5 * input + 0.5).clamp_(0, 1)
-
 
 class Entmax15Function(Function):
     """
@@ -182,10 +176,8 @@ class Entmoid15(Function):
         grad_input -= q * gppr0
         return grad_input
 
-
 entmax15 = lambda input, dim=-1: Entmax15Function.apply(input, dim)
 entmoid15 = Entmoid15.apply
-
 
 class Lambda(nn.Module):
     def __init__(self, func):
@@ -194,7 +186,6 @@ class Lambda(nn.Module):
 
     def forward(self, *args, **kwargs):
         return self.func(*args, **kwargs)
-
 
 class ModuleWithInit(nn.Module):
     """ Base class for pytorch module with data-aware initializer on first batch """

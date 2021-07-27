@@ -1,19 +1,18 @@
-import os
-import time
-import glob
-import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+# -*- coding: utf-8 -*-
 
 from .utils import get_latest_file, iterate_minibatches, check_numpy, process_in_chunks
-from .nn_utils import to_one_hot
-from collections import OrderedDict
-from copy import deepcopy
-from tensorboardX import SummaryWriter
-
 from sklearn.metrics import roc_auc_score, log_loss
-
+from tensorboardX import SummaryWriter
+from collections import OrderedDict
+from .nn_utils import to_one_hot
+import torch.nn.functional as F
+from copy import deepcopy
+import torch.nn as nn
+import numpy as np
+import torch
+import time
+import glob
+import os
 
 class Trainer(nn.Module):
     def __init__(self, model, loss_function, experiment_name=None, warm_start=False, 
